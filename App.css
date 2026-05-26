@@ -1,0 +1,585 @@
+/* ══════════════════════════════════════════
+   RESET
+══════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ══════════════════════════════════════════
+   SCREEN — body & wrapper
+══════════════════════════════════════════ */
+body {
+  background: #c8c8c8;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 24px 0;
+}
+
+.report-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+}
+
+/* ══════════════════════════════════════════
+   MASTER TABLE — used in JSX for header/footer repeat
+══════════════════════════════════════════ */
+.master-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.master-header-cell {
+  padding: 0;
+  vertical-align: top;
+}
+
+.master-footer-cell {
+  padding: 0;
+  vertical-align: bottom;
+}
+
+/* ══════════════════════════════════════════
+   HEADER CONTAINER
+══════════════════════════════════════════ */
+.report-header-container {
+  border: none;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px 8px 16px;
+  background: #fff;
+  color: #000;
+}
+
+.report-title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  letter-spacing: 0.2px;
+}
+
+.report-logo {
+  height: 42px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER CONTAINER
+══════════════════════════════════════════ */
+.report-footer-container {
+  border: none;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px 8px 16px;
+  font-size: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #000;
+  background: #fff;
+}
+
+.footer-company {
+  flex: 1;
+  color: #000;
+}
+
+/* Screen: hide print page number, show screen page number */
+.footer-page {
+  display: none;
+  color: #000;
+}
+
+.footer-page-screen {
+  display: inline;
+  color: #000;
+}
+
+/* ══════════════════════════════════════════
+   PAGE CONTENT
+══════════════════════════════════════════ */
+.page-content {
+  padding: 12px 16px;
+  background: #fff;
+  color: #000;
+}
+
+/* ══════════════════════════════════════════
+   INNER REPORT TABLES
+   Outer border: 2px solid black
+   Inner cell borders: 1px solid light grey (screen)
+   thead cells: 1px solid black all sides (screen & print)
+══════════════════════════════════════════ */
+.rpt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 11px;
+  font-family: 'Courier New', Courier, monospace;
+  table-layout: auto;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+
+.rpt-table:last-child {
+  margin-bottom: 0;
+}
+
+/* Inner cell borders: 1px solid light grey - applies to all td/th */
+.rpt-table td,
+.rpt-table th {
+  border: 1px solid #d0d0d0;
+  padding: 4px 6px;  /* Base padding for all cells */
+}
+
+/* Empty cells - maintain spacing */
+.rpt-table td:empty,
+.rpt-table th:empty,
+.rpt-table td:blank,
+.rpt-table th:blank {
+  padding: 4px 6px;  /* Ensure empty cells have same padding */
+}
+
+/* Empty cells with no content or only whitespace */
+.rpt-table td:empty::before,
+.rpt-table th:empty::before {
+  content: "\00a0";  /* Non-breaking space to maintain height */
+  display: inline-block;
+}
+
+/* Cells that might contain only whitespace */
+.rpt-table td:not(:empty):not([class*="spacer"]):empty,
+.rpt-table th:not(:empty):not([class*="spacer"]):empty {
+  padding: 4px 6px;
+}
+
+/* Specific for spacer cells */
+.rpt-table .spacer-cell,
+.rpt-table .spacer-cell-small {
+  padding: 4px 2px !important;
+}
+
+/* Empty spacer cells */
+.rpt-table .spacer-cell:empty,
+.rpt-table .spacer-cell-small:empty {
+  padding: 4px 2px !important;
+}
+
+.rpt-table .spacer-cell:empty::before,
+.rpt-table .spacer-cell-small:empty::before {
+  content: "\00a0";
+  display: inline-block;
+}
+
+/* thead cells: 1px solid black all sides — screen & print */
+.rpt-table thead td,
+.rpt-table thead th {
+  border: 1px solid #000 !important;
+  padding: 4px 6px;
+  vertical-align: middle;
+  line-height: 1.35;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: #000;
+  background: #fff;
+}
+
+/* ══════════════════════════════════════════
+   COLUMN HEADER ROWS
+══════════════════════════════════════════ */
+.column-header-row {
+  background: #f5f5f5;
+}
+
+.column-header-row td {
+  background: #f5f5f5 !important;
+  padding: 4px 6px;
+}
+
+.param-header {
+  font-weight: bold;
+  font-size: 10px;
+  text-align: left;
+  padding: 4px 6px !important;
+  color: #333;
+  background: #f5f5f5 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.param-header.ctr {
+  text-align: center;
+}
+
+/* ══════════════════════════════════════════
+   SPACER CELLS — no borders
+══════════════════════════════════════════ */
+.spacer-cell {
+  border: none !important;
+  padding: 4px 2px !important;
+  background: none !important;
+  width: 2% !important;
+}
+
+.spacer-cell-small {
+  border: none !important;
+  padding: 4px 2px !important;
+  background: none !important;
+  width: 1% !important;
+}
+
+/* ══════════════════════════════════════════
+   SECTION HEADERS
+══════════════════════════════════════════ */
+.rpt-table .sec-hdr {
+  background: #fff !important;
+  color: #000 !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 6px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border: 1px solid #d0d0d0; /* Inner border match */
+}
+
+/* ══════════════════════════════════════════
+   CELL TYPE STYLES
+══════════════════════════════════════════ */
+.label-cell {
+  font-weight: 500;
+  background: #fff;
+  padding: 4px 6px;
+}
+
+.value-cell {
+  font-weight: normal;
+  background: #fff;
+  padding: 4px 6px;
+}
+
+.symbol-cell {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  background: #fff;
+  padding: 4px 6px;
+}
+
+.unit-cell {
+  text-align: center;
+  background: #fff;
+  padding: 4px 6px;
+}
+
+.description-cell {
+  font-size: 10px;
+  color: #333;
+  background: #fff;
+  padding: 4px 6px;
+}
+
+.condition-cell {
+  color: #555;
+  font-style: italic;
+  padding: 4px 6px 4px 12px;
+  background: #fff;
+}
+
+.evaluation-cell {
+  font-weight: 500;
+  background: #fff;
+  padding: 4px 6px;
+}
+
+/* ══════════════════════════════════════════
+   ALIGNMENT UTILITIES
+══════════════════════════════════════════ */
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #000;
+  padding: 4px 6px;
+}
+
+.ctr {
+  text-align: center;
+  color: #000;
+  padding: 4px 6px;
+}
+
+.text-center {
+  text-align: center;
+  color: #000;
+  padding: 4px 6px;
+}
+
+.text-right {
+  text-align: right;
+  color: #000;
+  padding: 4px 6px;
+}
+
+.bold {
+  font-weight: bold;
+  color: #000;
+}
+
+/* ══════════════════════════════════════════
+   MOBILE — max-width 600px
+══════════════════════════════════════════ */
+@media screen and (max-width: 600px) {
+  body {
+    padding: 0;
+    background: #fff;
+  }
+
+  .report-wrapper {
+    max-width: 100%;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .report-header {
+    padding: 8px 10px 6px 10px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .report-title {
+    font-size: 12px;
+  }
+
+  .report-logo {
+    height: 30px;
+  }
+
+  .report-footer {
+    padding: 4px 10px 6px 10px;
+    font-size: 9px;
+  }
+
+  .page-content {
+    padding: 8px 10px;
+  }
+
+  .rpt-table {
+    font-size: 9px;
+    margin-bottom: 10px;
+  }
+
+  .rpt-table td,
+  .rpt-table th {
+    padding: 3px 4px;
+    font-size: 9px;
+  }
+
+  /* Empty cells on mobile */
+  .rpt-table td:empty,
+  .rpt-table th:empty {
+    padding: 3px 4px;
+  }
+
+  .rpt-table .sec-hdr {
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+
+  .param-header {
+    font-size: 8px;
+    padding: 3px 4px !important;
+  }
+
+  .description-cell {
+    font-size: 8px;
+  }
+
+  .spacer-cell {
+    width: 1% !important;
+    padding: 3px 1px !important;
+  }
+
+  .spacer-cell-small {
+    width: 0.5% !important;
+    padding: 3px 1px !important;
+  }
+  
+  /* Empty spacer cells on mobile */
+  .rpt-table .spacer-cell:empty,
+  .rpt-table .spacer-cell-small:empty {
+    padding: 3px 1px !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   PRINT
+   - Header/footer repeat on every page via <thead>/<tfoot>
+   - Page numbers shown, screen numbers hidden
+   - All borders match screen:
+     * Outer: 2px solid black
+     * Inner cells: 1px solid light grey
+     * thead cells: 1px solid black all sides
+══════════════════════════════════════════ */
+@media print {
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html, body {
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .report-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .master-table {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Swap page number visibility */
+  .footer-page-screen {
+    display: none !important;
+  }
+
+  .footer-page {
+    display: inline !important;
+  }
+
+  /* Prevent row splitting across pages */
+  .rpt-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .rpt-table {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+
+  .rpt-table thead {
+    display: table-header-group;
+  }
+
+  /* Force background and color printing */
+  .rpt-table,
+  .rpt-table td,
+  .rpt-table th {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* ── BORDERS: exact match to screen ──
+     Use separate border model with border-spacing:0 so each cell
+     owns its own borders. This prevents border loss at page breaks.
+  */
+  .rpt-table {
+    border: 1px solid #000 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+
+  /* Inner cells: 1px solid light grey (same as screen) */
+  .rpt-table td,
+  .rpt-table th {
+    border-top:    1px solid #d0d0d0 !important;
+    border-right:  1px solid #d0d0d0 !important;
+    border-bottom: 1px solid #d0d0d0 !important;
+    border-left:   1px solid #d0d0d0 !important;
+    padding: 4px 6px !important;
+  }
+
+  /* Empty cells in print */
+  .rpt-table td:empty,
+  .rpt-table th:empty {
+    padding: 4px 6px !important;
+  }
+
+  .rpt-table td:empty::before,
+  .rpt-table th:empty::before {
+    content: "\00a0" !important;
+    display: inline-block !important;
+  }
+
+  /* thead cells: 1px solid black all sides (same as screen) */
+  .rpt-table thead td,
+  .rpt-table thead th {
+    border: 1px solid #000 !important;
+    padding: 4px 6px !important;
+  }
+
+  /* Outer 2px black border on all 4 sides of the table */
+  .rpt-table tr td:first-child,
+  .rpt-table tr th:first-child {
+    border-left: 1px solid #000 !important;
+  }
+
+  .rpt-table tr td:last-child,
+  .rpt-table tr th:last-child {
+    border-right: 1px solid #000 !important;
+  }
+
+  .rpt-table tr:first-child td,
+  .rpt-table tr:first-child th {
+    border-top: 1px solid #000 !important;
+  }
+
+  .rpt-table tr:last-child td,
+  .rpt-table tr:last-child th {
+    border-bottom: 1px solid #000 !important;
+  }
+
+  /* Spacer cells: no borders (same as screen) */
+  .rpt-table .spacer-cell,
+  .rpt-table .spacer-cell-small {
+    border: none !important;
+    padding: 4px 2px !important;
+  }
+
+  .rpt-table .spacer-cell:empty,
+  .rpt-table .spacer-cell-small:empty {
+    padding: 4px 2px !important;
+  }
+
+  /* Column header background preservation */
+  .column-header-row td {
+    background: #f5f5f5 !important;
+  }
+
+  .rpt-table .sec-hdr {
+    background: #fff !important;
+    border: 1px solid #d0d0d0 !important;
+    padding: 6px 8px !important;
+  }
+}
